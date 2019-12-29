@@ -7,18 +7,18 @@ const instance = axios.create({
 
 export const API = {
     getWorkers() {
-        return instance.get('users').then(response => response.data);
+        return instance.get('workers').then(response => response.data);
     },
     addWorker(firstName, lastName, age, gender, info, data, salary, position) {
         let params = { firstName, lastName, age, gender, info, data, salary, position };
-        return instance.post('users', params).then(response => response.data);
+        return instance.post('workers', params).then(response => response.data);
     },
     deleteWorker(id) {
-        return instance.delete(`users/${id}`).then(response => response.data);
+        return instance.delete(`workers/${id}`).then(response => response.data);
     },
-    updateWorker(firstName, lastName, age, gender, info, data, salary, position) {
-        let params = { firstName, lastName, age, gender, info, data, salary, position };
-        return instance.put('users', params).then(response => response.data);
+    updateWorker(id, firstName, lastName, age, gender, info, data, salary, position) {
+        let params = { id, firstName, lastName, age, gender, info, data, salary, position };
+        return instance.put('workers', params).then(response => response.data);
     },
     loginUser(login, password) {
         return instance.post('login', { login, password }).then(response => response.data);
