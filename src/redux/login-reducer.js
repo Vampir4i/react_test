@@ -6,7 +6,7 @@ let initialState = {
     userId: '',
     login: '',
     email: '',
-    isAuth: false
+    isAuth: true
 }
 
 export const loginReducer = (state = initialState, action) => {

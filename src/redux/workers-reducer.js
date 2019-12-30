@@ -29,7 +29,7 @@ export const workersReducer = (state = initialState, action) => {
             return {
                 ...state,
                 workers: state.workers.map(worker => {
-                    if(worker.id === action.worker.id)
+                    if(worker._id === action.worker._id)
                         return {...action.worker};
                     return worker;
                 })
@@ -37,7 +37,7 @@ export const workersReducer = (state = initialState, action) => {
         case DELETE_WORKER:
             return {
                 ...state,
-                workers: state.workers.filter(worker => worker.id !== action.worker.id)
+                workers: state.workers.filter(worker => worker._id !== action.worker._id)
             }
         case SET_FETCHING:
             return {
@@ -82,11 +82,10 @@ export const getWorkersServer = () => {
     }
 }
 
-export const updateWorkerServer = (id, firstName, lastName, age, gender, info, data, salary, position) => {
-    //Переписать сервер на прием обьекта работника
+export const updateWorkerServer = (worker) => {
     return (dispatch) => {
         dispatch(setFetching(true));
-        API.updateWorker(id, firstName, lastName, age, gender, info, data, salary, position).then(data => {
+        API.updateWorker(worker).then(data => {
             dispatch(setFetching(false));
             dispatch(updateWorker(data));
         })
@@ -103,10 +102,10 @@ export const deleteWorkerServer = (id) => {
     }
 }
 
-export const addWorkerServer = (firstName, lastName, age, gender, info, data, salary, position) => {
+export const addWorkerServer = (worker) => {
     return (dispatch) => {
         dispatch(setFetching(true));
-        API.addWorker(firstName, lastName, age, gender, info, data, salary, position).then(data => {
+        API.addWorker(worker).then(data => {
             dispatch(setFetching(false));
             dispatch(addWorker(data));
         })
