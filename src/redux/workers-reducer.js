@@ -88,6 +88,7 @@ export const updateWorkerServer = (worker) => {
         API.updateWorker(worker).then(data => {
             dispatch(setFetching(false));
             dispatch(updateWorker(data));
+            debugger
         })
     }
 }

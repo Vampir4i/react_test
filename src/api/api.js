@@ -19,6 +19,7 @@ export const API = {
         return instance.put('workers', {...worker}).then(response => response.data);
     },
     loginUser(login, password) {
+        //debugger;
         return instance.post('login', { login, password }).then(response => response.data);
     },
     registerUser(login, password, email) {
