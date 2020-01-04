@@ -5,16 +5,20 @@ const DELETE_WORKER = 'DELETE_WORKER';
 const UPDATE_WORKER = 'UPDATE_WORKER';
 const GET_WORKERS = 'GET_WORKERS';
 const SET_FETCHING = 'SET_FETCHING';
+const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
+const SET_TOTAL_WORKERS_COUNT = 'SET_TOTAL_WORKERS_COUNT';
 
 let initialState = {
     workers: [],
     isFetching: false,
-    //Добавить пагинацию
+    pageSize: 5,
+    totalWorkersCount: 0,
+    currentPage: 1
     //Добавить disable кнопок
 }
 
 export const workersReducer = (state = initialState, action) => {
-    switch(action.type){
+    switch (action.type) {
         case GET_WORKERS:
             return {
                 ...state,
@@ -29,8 +33,8 @@ export const workersReducer = (state = initialState, action) => {
             return {
                 ...state,
                 workers: state.workers.map(worker => {
-                    if(worker._id === action.worker._id)
-                        return {...action.worker};
+                    if (worker._id === action.worker._id)
+                        return { ...action.worker };
                     return worker;
                 })
             }
@@ -44,71 +48,69 @@ export const workersReducer = (state = initialState, action) => {
                 ...state,
                 isFetching: action.isFetching
             }
+        case SET_CURRENT_PAGE: {
+            return { ...state, currentPage: action.currentPage }
+        }
+        case SET_TOTAL_WORKERS_COUNT: {
+            return { ...state, totalWorkersCount: action.count }
+        }
         default:
             return state;
     }
 }
 
-export const setFetching = (isFetching) => {
-    return {type: SET_FETCHING, isFetching};
+export const setFetching = (isFetching) => ({ type: SET_FETCHING, isFetching })
+
+export const addWorker = (worker) => ({ type: ADD_WORKER, worker })
+
+export const updateWorker = (worker) => ({ type: UPDATE_WORKER, worker })
+
+export const deleteWorker = (worker) => ({ type: DELETE_WORKER, worker })
+
+export const getWorkers = (workers) => ({ type: GET_WORKERS, workers })
+
+export const setCurrentPage = (currentPage) => ({ type: SET_CURRENT_PAGE, currentPage })
+
+export const setTotalUsersCount = (totalUsersCount) =>
+    ({ type: SET_TOTAL_WORKERS_COUNT, count: totalUsersCount })
+
+const helperFunction= (dispatch, page, pageSize)=>{
+    debugger
+    API.getWorkers(page, pageSize).then(data => {
+        //Дописать условие на корректное выполнение запроса
+        dispatch(getWorkers(data.workers));
+        dispatch(setTotalUsersCount(data.countWorkers));
+    })
 }
 
-export const addWorker = (worker) => {
-    //Проследить за обьектов worker, возможно нужна копия обьекта
-    return {type: ADD_WORKER, worker};
-}
-
-export const updateWorker = (worker) => {
-    return {type: UPDATE_WORKER, worker};
-}
-
-export const deleteWorker = (worker) => {
-    //Возможно передавать только id
-    return {type: DELETE_WORKER, worker};
-}
-
-export const getWorkers = (workers) => {
-    return {type: GET_WORKERS, workers};
-}
-
-export const getWorkersServer = () => {
+export const getWorkersServer = (page, pageSize) => {
     return (dispatch) => {
-        dispatch(setFetching(true));
-        API.getWorkers().then(data => {
-            //Дописать условие на корректное выполнение запроса
-            dispatch(setFetching(false));
-            dispatch(getWorkers(data));
-        })
+        dispatch(setCurrentPage(page));
+        helperFunction(dispatch, page, pageSize);
     }
 }
 
 export const updateWorkerServer = (worker) => {
     return (dispatch) => {
-        dispatch(setFetching(true));
         API.updateWorker(worker).then(data => {
-            dispatch(setFetching(false));
             dispatch(updateWorker(data));
-            debugger
         })
     }
 }
 
-export const deleteWorkerServer = (id) => {
+export const deleteWorkerServer = (id, page, pageSize) => {
     return (dispatch) => {
-        dispatch(setFetching(true));
         API.deleteWorker(id).then(data => {
-            dispatch(setFetching(false));
-            dispatch(deleteWorker(data));
+            dispatch(setCurrentPage(page));
+            helperFunction(dispatch, page, pageSize)
         })
     }
 }
 
-export const addWorkerServer = (worker) => {
+export const addWorkerServer = (worker, page, pageSize) => {
     return (dispatch) => {
-        dispatch(setFetching(true));
         API.addWorker(worker).then(data => {
-            dispatch(setFetching(false));
-            dispatch(addWorker(data));
+            helperFunction(dispatch, page, pageSize);
         })
     }
 }

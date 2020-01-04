@@ -7,7 +7,7 @@ import { addWorkerServer, updateWorkerServer, getWorkersServer, deleteWorkerServ
 
 class MainPageContainer extends React.Component {
     componentDidMount(){
-        this.props.getWorkersServer();
+        this.props.getWorkersServer(this.props.currentPage, this.props.pageSize);
     }
 
     constructor(props) {
@@ -29,6 +29,7 @@ class MainPageContainer extends React.Component {
         this.changeInput = this.changeInput.bind(this);
         this.submitHandler = this.submitHandler.bind(this);
         this.selectWorker = this.selectWorker.bind(this);
+        this.deleteWorker = this.deleteWorker.bind(this);
     }
 
     selectWorker(worker) {
@@ -49,8 +50,12 @@ class MainPageContainer extends React.Component {
 
     submitHandler() {
         this.state.workerInfo._id? this.props.updateWorkerServer(this.state.workerInfo):
-                                    this.props.addWorkerServer(this.state.workerInfo);
+            this.props.addWorkerServer(this.state.workerInfo, this.props.currentPage, this.props.pageSize);
         this.resetWorkerInfo();
+    }
+
+    onPageChange = (pageNumber) => {
+        this.props.getWorkersServer(pageNumber, this.props.pageSize);
     }
 
     resetWorkerInfo(){
@@ -69,17 +74,28 @@ class MainPageContainer extends React.Component {
         }))
     }
 
+    deleteWorker(id){
+        let currentPage = this.props.currentPage;
+        currentPage = this.props.workers.length == 1? --currentPage : currentPage;
+        this.props.deleteWorkerServer(id, currentPage, this.props.pageSize);
+    }
+
     render() {
         return (
-            <MainPage workers={this.props.workers} WI={this.state.workerInfo} 
-                changeInput={this.changeInput} submitHandler={this.submitHandler}
-                selectWorker={this.selectWorker} deleteWorker={this.props.deleteWorkerServer} />
+            <MainPage workers={this.props.workers} pageSize={this.props.pageSize} 
+                currentPage={this.props.currentPage} totalWorkersCount={this.props.totalWorkersCount} 
+                WI={this.state.workerInfo} changeInput={this.changeInput} 
+                submitHandler={this.submitHandler} selectWorker={this.selectWorker} 
+                deleteWorker={this.deleteWorker} onPageChange={this.onPageChange} />
         )
     }
 }
 
 const mapStateToProps = (state) => ({
-    workers: state.workersPage.workers
+    workers: state.workersPage.workers,
+    pageSize: state.workersPage.pageSize,
+    totalWorkersCount: state.workersPage.totalWorkersCount,
+    currentPage: state.workersPage.currentPage
 })
 
 export default compose(

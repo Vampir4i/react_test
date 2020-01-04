@@ -33,7 +33,6 @@ export const authUser = (login, password,) => {
             if(data){
                 let { _id, login, email, password } = data;
                 dispatch(setLogin(_id, login, email, password));
-                //window.location.href='/main';
             }
         });
     }
@@ -46,7 +45,6 @@ export const sendRegistrationInfo = (login, password, email) => {
             console.log(data);
             let { _id, login, email, password } = data;
             dispatch(setLogin(_id, login, email, password));
-            window.location.href='/main';
             //dispatch(setFetching(false));
         })
     }

@@ -6,8 +6,8 @@ const instance = axios.create({
 
 
 export const API = {
-    getWorkers() {
-        return instance.get('workers').then(response => response.data);
+    getWorkers(currentPage = 1, pageSize = 5) {
+        return instance.get(`workers?page=${currentPage}&count=${pageSize}`).then(response => response.data);
     },
     addWorker(worker) {
         return instance.post('workers', {...worker}).then(response => response.data);
@@ -19,7 +19,6 @@ export const API = {
         return instance.put('workers', {...worker}).then(response => response.data);
     },
     loginUser(login, password) {
-        //debugger;
         return instance.post('login', { login, password }).then(response => response.data);
     },
     registerUser(login, password, email) {
