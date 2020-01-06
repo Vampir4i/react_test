@@ -12,6 +12,12 @@ const MainPage = (props) => {
         pagesList.push(i);
     }
 
+    const headerTable = (field, label) => <th onClick={(e) => tableClick(e, field)}>{label}</th>
+
+    const tableClick = (e, field) => {
+        props.setSortedField(field);
+    } 
+
     return(
         <div>
             <WorkerForm WI={props.WI} changeInput={props.changeInput} submitHandler={props.submitHandler} />
@@ -19,8 +25,20 @@ const MainPage = (props) => {
                 return <span onClick={() => props.onPageChange(i)}
                     className={props.currentPage == i && style.selectedPage} >{i + ' '}</span>
             })}
-            {props.workers.map(worker=><WorkerItem worker={worker} selectWorker={props.selectWorker} 
-                deleteWorker={props.deleteWorker} />)}
+            <table>
+                <tr>
+                    {headerTable('firstName', 'First name')}
+                    {headerTable('lastName', 'Second name')}
+                    {headerTable('age', 'Age')}
+                    {headerTable('info', 'Info')}
+                    {headerTable('gender', 'Gender')}
+                    {headerTable('position', 'Position')}
+                    {headerTable('salary', 'Salary')}
+                </tr>
+                {props.workers.map(worker=><WorkerItem worker={worker} selectWorker={props.selectWorker} 
+                                deleteWorker={props.deleteWorker} />)}  
+            </table>
+            
         </div>
     );
 } 

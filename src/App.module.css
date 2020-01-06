@@ -1,0 +1,67 @@
+
+a{
+  color: #fff;
+}
+a:hover{
+  text-decoration: none;
+}
+.container{
+  width:400px;
+  background-color: rgba(24, 33, 52, 0.7);
+  margin: 100px auto 0 auto;
+  text-align: center;
+  box-shadow: 0 -5px 0 #3adbfd;
+  padding: 10px 0 10px 0;
+}
+
+.containerWorker{
+  width:400px;
+  background-color: rgba(24, 33, 52, 0.7);
+  margin: 10px auto 0 auto;
+  text-align: center;
+  box-shadow: 0 -5px 0 #3adbfd;
+  padding: 10px 0 10px 0;
+}
+
+input[type="text"],input[type="password"]{
+ width: 250px;
+ height:35px;
+ font-size: 16px;
+ margin-bottom: 15px;
+ border-radius: 4px;
+ padding-left: 40px;
+}
+.dwsInput input:hover{
+ box-shadow: 0 0 6px 3px rgba(58, 219, 253, 0.35);
+}
+.dwsSubmit {
+ padding: 13px 30px;
+ margin: 5px 0 20px 0;
+ font-size: 15px;
+ color: #fff;
+ background-color: #2ca8c6;
+ border: none;
+ border-bottom: 4px solid #6ee9fd;
+ cursor: pointer;
+}
+.dwsSubmit:hover{
+ transition: all 0.5s;
+ background: #fff;
+ color: #2c536c;
+}
+
+.dwsInput::before{
+ font-family: "FontAwesome";
+ content: "\f007";
+ position: absolute;
+ font-size: 30px;
+ padding: 10px 0 0 7px;
+ color: #2c536c;
+}
+.dwsInput:nth-child(2)::before{
+content: "\f023";
+}
+.dwsInput:hover::before{
+ color: #319ebc;
+ transition: all 0.3s;
+}

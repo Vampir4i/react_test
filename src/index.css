@@ -1,4 +1,12 @@
 body {
+  overflow: auto;
+  text-align: center;
+  background-image: url("https://dwstroy.ru/lessons/les3373/demo//img/bg.png");
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',

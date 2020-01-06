@@ -3,7 +3,8 @@ import MainPage from './MainPage';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { withRedirect } from './../hoc/withRedirect';
-import { addWorkerServer, updateWorkerServer, getWorkersServer, deleteWorkerServer } from './../redux/workers-reducer';
+import { addWorkerServer, updateWorkerServer, getWorkersServer, 
+    deleteWorkerServer, setSortedField } from './../redux/workers-reducer';
 
 class MainPageContainer extends React.Component {
     componentDidMount(){
@@ -14,15 +15,8 @@ class MainPageContainer extends React.Component {
         super(props);
         this.state = {
             workerInfo: {
-                _id: '',
-                firstName: '',
-                lastName: '',
-                age: '',
-                gender: '',
-                info: '',
-                data: '',
-                salary: '',
-                position: ''
+                _id: '', firstName: '', lastName: '', age: '', gender: '', 
+                info: '', data: '', salary: '', position: ''
             }
         }
 
@@ -61,15 +55,8 @@ class MainPageContainer extends React.Component {
     resetWorkerInfo(){
         this.setState((prevState, props) => ({
             workerInfo: {
-                _id: '',
-                firstName: '',
-                lastName: '',
-                age: '',
-                gender: '',
-                info: '',
-                data: '',
-                salary: '',
-                position: ''
+                _id: '', firstName: '', lastName: '', age: '', gender: '', 
+                info: '', data: '', salary: '', position: ''
             }
         }))
     }
@@ -80,13 +67,22 @@ class MainPageContainer extends React.Component {
         this.props.deleteWorkerServer(id, currentPage, this.props.pageSize);
     }
 
+    sortWorkers() {
+        const {workers, field} = this.props;
+        workers.sort((a, b) => a[field] > b[field] ? 1 : -1);
+        debugger
+    }
+
     render() {
+        this.sortWorkers();
+        debugger
         return (
             <MainPage workers={this.props.workers} pageSize={this.props.pageSize} 
                 currentPage={this.props.currentPage} totalWorkersCount={this.props.totalWorkersCount} 
                 WI={this.state.workerInfo} changeInput={this.changeInput} 
                 submitHandler={this.submitHandler} selectWorker={this.selectWorker} 
-                deleteWorker={this.deleteWorker} onPageChange={this.onPageChange} />
+                deleteWorker={this.deleteWorker} onPageChange={this.onPageChange}
+                setSortedField={this.props.setSortedField} />
         )
     }
 }
@@ -95,10 +91,12 @@ const mapStateToProps = (state) => ({
     workers: state.workersPage.workers,
     pageSize: state.workersPage.pageSize,
     totalWorkersCount: state.workersPage.totalWorkersCount,
-    currentPage: state.workersPage.currentPage
+    currentPage: state.workersPage.currentPage,
+    field: state.workersPage.sortedField
 })
 
 export default compose(
-    connect(mapStateToProps, {addWorkerServer, updateWorkerServer, getWorkersServer, deleteWorkerServer}),
+    connect(mapStateToProps, {addWorkerServer, updateWorkerServer, getWorkersServer, 
+        deleteWorkerServer, setSortedField}),
     withRedirect
 )(MainPageContainer)

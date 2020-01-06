@@ -7,13 +7,15 @@ const GET_WORKERS = 'GET_WORKERS';
 const SET_FETCHING = 'SET_FETCHING';
 const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
 const SET_TOTAL_WORKERS_COUNT = 'SET_TOTAL_WORKERS_COUNT';
+const SET_SORTED_FIELD = 'SET_SORTED_FIELD';
 
 let initialState = {
     workers: [],
     isFetching: false,
     pageSize: 5,
     totalWorkersCount: 0,
-    currentPage: 1
+    currentPage: 1,
+    sortedField: 'firstName'
     //Добавить disable кнопок
 }
 
@@ -54,6 +56,9 @@ export const workersReducer = (state = initialState, action) => {
         case SET_TOTAL_WORKERS_COUNT: {
             return { ...state, totalWorkersCount: action.count }
         }
+        case SET_SORTED_FIELD: {
+            return { ...state, sortedField: action.field }
+        }
         default:
             return state;
     }
@@ -71,11 +76,12 @@ export const getWorkers = (workers) => ({ type: GET_WORKERS, workers })
 
 export const setCurrentPage = (currentPage) => ({ type: SET_CURRENT_PAGE, currentPage })
 
+export const setSortedField = (field) => ({ type: SET_SORTED_FIELD, field })
+
 export const setTotalUsersCount = (totalUsersCount) =>
     ({ type: SET_TOTAL_WORKERS_COUNT, count: totalUsersCount })
 
-const helperFunction= (dispatch, page, pageSize)=>{
-    debugger
+const helperFunction = (dispatch, page, pageSize) => {
     API.getWorkers(page, pageSize).then(data => {
         //Дописать условие на корректное выполнение запроса
         dispatch(getWorkers(data.workers));

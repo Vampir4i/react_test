@@ -1,5 +1,5 @@
 import React from 'react';
-import style from './RegistrationPage.module.css';
+import style from './../App.module.css';
 
 
 const RegistrationPage = (props) => {
@@ -7,29 +7,20 @@ const RegistrationPage = (props) => {
         <form onSubmit={(e) => {
             e.preventDefault();
             props.submitHandler();
-        }}>
-            <div>
-                <label>
-                    Логин:
-                <input type="text" value={props.login} name='login' onChange={props.inputHandler} />
-                </label>
+        }} className={style.container}>
+            <div className={style.dwsInput}>
+                <input type="text" value={props.login} name='login' onChange={props.inputHandler} placeholder='Login' />
             </div>
 
-            <div>
-                <label>
-                    Пароль:
-                <input type="password" value={props.password} name='password' onChange={props.inputHandler} />
-                </label>
+            <div className={style.dwsInput}>
+                <input type="password" value={props.password} name='password' onChange={props.inputHandler} placeholder='Password' />
             </div>
 
-            <div>
-                <label>
-                    Электронный адрес:
-                <input type="text" value={props.email} name='email' onChange={props.inputHandler} />
-                </label>
+            <div className={style.dwsInput}>
+                <input type="text" value={props.email} name='email' onChange={props.inputHandler} placeholder='Email' />
             </div>
 
-            <input type="submit" value='Войти' />
+            <input className={style.dwsSubmit} type="submit" value='Войти' />
         </form>
     );
 }
